@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const FetchQuestions = () => {
-  const [exam, setExam] = useState("");
-  const [year, setYear] = useState("");
+  const [exam, setExam] = useState("CAT");
+  const [year, setYear] = useState("2023");
   const [questions, setQuestions] = useState([]);
 
   const fetchQuestions = async () => {
@@ -11,15 +11,16 @@ const FetchQuestions = () => {
       const response = await axios.get(
         `http://localhost:5000/api/tests/${exam}/${year}`
       );
+      console.log(response.data)
       setQuestions(response.data);
     } catch (error) {
       console.error("Error fetching questions:", error);
     }
   };
 
-//   useEffect(() => {
-//     fetchQuestions();
-//   }, [exam, year]);
+  useEffect(() => {
+    fetchQuestions();
+  }, [exam, year]);
 
   return (
     <div>

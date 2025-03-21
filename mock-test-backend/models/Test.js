@@ -1,10 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const testSchema = new mongoose.Schema({
   exam: { type: String, required: true }, // e.g., CAT, GRE
   year: { type: String, required: true }, // e.g., 2022, 2023
+  shift: { type: String, required: true },
   questions: [
     {
+     
       question: { type: String, required: true },
       options: { type: [String], required: true },
       correctAnswer: { type: String, required: true },
@@ -12,4 +14,4 @@ const testSchema = new mongoose.Schema({
   ],
 });
 
-module.exports = mongoose.model('Test', testSchema);
+module.exports = mongoose.model("Test", testSchema);
