@@ -81,4 +81,28 @@ exports.getAvailablePapers = async (req, res) => {
   }
 };
 
+ 
 
+exports.getAvailableExams = async (req, res) => {
+  try {
+    // Fetch all unique exams
+    const exams = await Test.aggregate([
+      {
+        $group: {
+          _id: "$exam", // Group by exam
+        },
+      },
+      {
+        $project: {
+          _id: 0, // Exclude the default _id field
+          exam: "$_id", // Include the exam field
+        },
+      },
+    ]);
+
+    res.json(exams);
+  } catch (err) {
+    console.error("Error fetching available exams:", err);
+    res.status(500).send("Server error");
+  }
+};
