@@ -3,6 +3,6 @@ const { getSyllabus,addOrUpdateSyllabus } = require("../controllers/syllabusCont
 const router = express.Router();
 
 router.get("/:exam", getSyllabus);
-router.post("/syllabus", addOrUpdateSyllabus);
+router.post("/", addOrUpdateSyllabus);
 
 module.exports = router;

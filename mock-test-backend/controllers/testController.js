@@ -1,4 +1,4 @@
-const Test = require('../models/Test');
+const Test = require("../models/Test");
 
 // Add questions to a specific exam and year
 exports.addQuestions = async (req, res) => {
@@ -51,7 +51,7 @@ exports.getTests = async (req, res) => {
     const tests = await Test.find({ exam, year });
     res.json(tests);
   } catch (err) {
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 };
 
@@ -81,8 +81,6 @@ exports.getAvailablePapers = async (req, res) => {
   }
 };
 
- 
-
 exports.getAvailableExams = async (req, res) => {
   try {
     // Fetch all unique exams
@@ -103,6 +101,43 @@ exports.getAvailableExams = async (req, res) => {
     res.json(exams);
   } catch (err) {
     console.error("Error fetching available exams:", err);
+    res.status(500).send("Server error");
+  }
+};
+
+exports.getAvailablePapersForExam = async (req, res) => {
+  const { exam } = req.params;
+
+  try {
+    // Fetch all unique papers for the specified exam
+    const papers = await Test.aggregate([
+      {
+        $match: { exam }, // Filter by exam
+      },
+      {
+        $group: {
+          _id: { year: "$year", shift: "$shift" }, // Group by year and shift
+        },
+      },
+      {
+        $project: {
+          _id: 0, // Exclude the default _id field
+          year: "$_id.year",
+          shift: "$_id.shift",
+        },
+      },
+    ]);
+    const response = {};
+    papers.forEach((paper) => {
+      if (!response[paper.year]) {
+        response[paper.year] = [];
+      }
+      response[paper.year].push(paper.shift);
+    });
+
+    res.json(papers);
+  } catch (err) {
+    console.error("Error fetching available papers:", err);
     res.status(500).send("Server error");
   }
 };
