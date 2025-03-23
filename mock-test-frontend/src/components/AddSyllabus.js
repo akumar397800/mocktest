@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from "axios";
 
 const AddSyllabus = () => {
   // State to manage form inputs
@@ -11,6 +12,7 @@ const AddSyllabus = () => {
       }
     ]
   });
+    const [response,setResponse]=useState("")
 
   // List of exams for the dropdown
   const exams = ['CAT', 'UPSC', 'GATE', 'NEET', 'JEE'];
